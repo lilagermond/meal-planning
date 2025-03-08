@@ -1,0 +1,97 @@
+/* Général */
+
+html, body {
+    margin:0 auto;
+}
+
+.bold{
+    font-weight:600;
+}
+
+/* Header */
+header{
+    margin:0;
+    background-color:#5381ed;
+    width:100%;
+    display:flex;
+    justify-content:center;
+}
+
+header a{
+    margin:20px;
+    text-decoration:none;
+    color:black;
+}
+
+/* Container */
+main{
+    max-width:1400px;
+    padding:20px;
+}
+
+/* Tableaux */
+.table{
+    display:grid;
+}
+
+#table-cuisine{
+    grid-template-columns: 200px 100px 100px;
+}
+
+#table-attribute{
+    grid-template-columns: 200px 100px 160px 160px;
+}
+
+#table-recipe{
+    grid-template-columns: 200px 200px 200px 200px 160px 100px;
+}
+
+#table-week{
+    grid-template-columns: 200px 600px 200px;
+}
+
+.table div{
+    border:1px solid black;
+    padding:5px 10px;
+} 
+
+.table-flex{
+    display:flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+}
+
+.table-flex>div {
+    margin:5px;
+}
+
+.cell-head{
+    font-weight:700;
+}
+
+.cell-head, .cell-body{
+    border:1px solid black;
+    padding:5px 10px;
+    min-height:25px;
+    width:200px;
+}
+
+.invisible{
+    display:none;
+}
+
+form{
+    margin:0;
+}
+
+.small{
+    width:70px;
+}
+
+.red{
+    color:red;
+}
+
+.large{
+    margin:0 5px;
+}
