@@ -22,7 +22,7 @@ function modify(id) {
 
 function validate_week_form()
       {
-       var inputElems = document.getElementsByTagName("input"),
+       var inputElems = document.getElementsByTagName("input");
         countCheckbox = 0;
 
         numberMeal = document.getElementById('meal_number').value;
@@ -47,4 +47,32 @@ function validate_week_form()
 
      }
 
+function choose_recipe(){
+        countCheckbox = 0;
+
+        numberMeal = document.getElementById('meal_number').value;
+
+        inputElems = document.getElementsByTagName("input");
+
+        for (var i=0; i<inputElems.length; i++) {       
+           if (inputElems[i].type == "checkbox" && inputElems[i].checked == true){
+                countCheckbox++;
+           }
+        }
+
+        rows = document.getElementsByName("choosen_recipe[]");
+
+        while (countCheckbox<numberMeal) {
+            random = Math.floor(Math.random() * (rows.length));
+
+            if (rows[random].checked == true || rows[random].className == "red"){
+                continue;
+            } 
+
+            rows[random].checked = true;
+
+            countCheckbox++;
+        }
+
+}
      

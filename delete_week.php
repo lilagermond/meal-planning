@@ -27,5 +27,5 @@
 
     $conn->close();
 
-    //header('Location: weeks.php');
+    header('Location: weeks.php');
     ?> 

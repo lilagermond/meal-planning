@@ -48,10 +48,16 @@
 
                                             while($row2=mysqli_fetch_row($query_recipes))
                                             {
-                                                echo "<input type=\"checkbox\" name=\"choosen_recipe[]\" value=\"$row2[0]\"/>
-                                                    <span ";
-
                                                 $query_last_week = mysqli_query($conn,"SELECT 1 FROM week w join week_historic h on h.week_id = w.id where w.id = (select max(id) from week) and recipe_id = '$row2[0]'");
+
+                                                echo "<input type=\"checkbox\" name=\"choosen_recipe[]\" value=\"$row2[0]\" ";
+
+                                                if (mysqli_num_rows($query_last_week)!=0){
+                                                    echo "class=\"red\" ";
+                                                };
+                                                
+                                                echo " />
+                                                    <span ";
 
                                                 if (mysqli_num_rows($query_last_week)!=0){
                                                     echo "class=\"red\"";
@@ -69,13 +75,15 @@
                         ?>
                     </div>
                     
-                    
+                    <a class="button is-link" onclick="choose_recipe()">Choisir automatiquement les recettes</a>  
                     <button class="button is-link">Valider la semaine</button>
                     <span class="invisible red" id="missing_recipes">Pas assez de recettes sélectionnées</span>
                 </form>
+
                 <br><br><br>
             </div>
-
+            
+            <!-- Previous weeks' plan -->
             <div id="view_past_weeks">
                 <h2 class="title">Menus des semaines passées</h2>
                 <div>
