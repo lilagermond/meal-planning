@@ -1,12 +1,14 @@
 /* Général */
-
 html, body {
     margin:0 auto;
+    font-family: "Roboto", sans-serif;
 }
 
 .bold{
     font-weight:600;
 }
+
+
 
 /* Header */
 header{
@@ -32,6 +34,7 @@ main{
 /* Tableaux */
 .table{
     display:grid;
+    margin-bottom:0 !important;
 }
 
 #table-cuisine{
@@ -39,7 +42,7 @@ main{
 }
 
 #table-attribute{
-    grid-template-columns: 200px 100px 160px 160px;
+    grid-template-columns: 200px 150px 160px 160px;
 }
 
 #table-recipe{

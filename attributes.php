@@ -1,27 +1,23 @@
-<html>
-    <head>
-        <title>Générateur de repas</title>
-        <link rel="stylesheet" href="style.css">
-        <script type="text/javascript" src='script.js'> </script>
-        <?php include 'connect.php'?>
-    </head>
-    <body>
-        <!-- Menu -->   
-        <?php include 'header.php' ?> 
+        <!-- Header partagé -->   
+        <?php include 'header.php' ?>
 
         <!-- Attributs -->
         <main id="attributes">
             <div id="add_attribute">
-                <h2>Ajouter un nouvel attribut</h2>
+                <h2 class="title">Ajouter un nouvel attribut</h2>
                 <form action="add_attribute.php" method="POST">
-                    Nom de l'attribut : <input type="text" name="attribute_name"><br>
-                    Nombre max par semaine : <input type="number" name="max_number"><br>
-                    <input type="submit">
+                    Nom de l'attribut : <br>
+                    <input type="text" class="input" name="attribute_name"><br><br>
+                    Nombre max par semaine : <br>
+                    <input type="number" class="input" name="max_number"><br>
+                    <br>
+                    <input type="submit" value="Créer un attribut" class="button is-link">
                 </form>
+                <br><br>
             </div>
 
             <div id="view_attribute">
-                <h2>Types d'attributs existants</h2>
+                <h2 class="title">Types d'attributs existants</h2>
                 <div>
                     <div id="table-attribute" class="table bold">
                         <div>Nom de l'attribut</div>
@@ -65,13 +61,13 @@
 
                                         <div> 
                                             <span id= \"visible_c_$row[0]\"> 
-                                                <button type=\"button\" onclick=\"modify($row[0])\">Modifier</button> 
+                                                <a><button type=\"button\" onclick=\"modify($row[0])\">Modifier</button></a> 
                                             </span>
                                             <span class=\"invisible\"> 
                                                 <input type=\"number\" name=\"attribute_id\" value =\"$row[0]\">
                                             </span>
                                             <span class=\"invisible\" id= \"invisible_c_$row[0]\"> 
-                                                <input type=\"submit\" value=\"Valider la modification\">
+                                                <a><button type=\"submit\">Valider la modification</button></a>
                                             </span>
                                         </div>
                     
@@ -92,7 +88,6 @@
 
         </main>
 
-        
-        <?php $conn->close(); ?>
-    </body>
-</html>
+
+        <!-- Footer partagé -->   
+        <?php include 'footer.php' ?>

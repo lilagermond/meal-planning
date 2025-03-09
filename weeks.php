@@ -1,24 +1,18 @@
-<html>
-    <head>
-        <title>Générateur de repas</title>
-        <link rel="stylesheet" href="style.css">
-        <script type="text/javascript" src='script.js'> </script>
-        <?php include 'connect.php'?>
-    </head>
-    <body>
+        <!-- Header partagé -->   
+        <?php include 'header.php' ?>
 
-        <!-- Menu -->   
-        <?php include 'header.php' ?> 
 
         <!-- Semaines  -->
         <main id="weeks">
             <div id="create_week">
-                <h2>Créer une nouvelle semaine</h2>
+                <h2 class="title">Créer une nouvelle semaine</h2>
                 <form action="add_week.php" onsubmit="return validate_week_form()">
-                    Nombre de jours : <input type="number" id="meal_number" name="meal_number"><br>
-                    Date: <input type="date" name="date"><br>
+                    Nombre de jours : <input type="number" class="input" id="meal_number" name="meal_number"><br><br>
+                    Date: <input type="date" class="input" name="date"><br>
+                    <br><br>
 
-
+                    Choisir les recettes <span class="red">(en rouge les recettes utilisées sur la semaine précédente)</span> : <br><br>
+                    
                     <div id="choose_recipes" class="table-flex">
                         <?php
                         $query_cuisine = mysqli_query($conn,'SELECT id, cuisine_name FROM cuisine');
@@ -50,9 +44,20 @@
                                         {
                                             // On récupère sur les lignes suivantes toutes les recettes qui correspondent à ce type de cuisine
                                             echo "<div class=\"cell-body\">";
+                                            $query_last_week = mysqli_query($conn,"SELECT recipe_id FROM week w join week_historic h on h.week_id = w.id where w.id = (select max(id) from week)");
+
                                             while($row2=mysqli_fetch_row($query_recipes))
                                             {
-                                                echo "<input type=\"checkbox\" name=\"choosen_recipe[]\" value=\"$row2[0]\"/> $row2[1] <br>";
+                                                echo "<input type=\"checkbox\" name=\"choosen_recipe[]\" value=\"$row2[0]\"/>
+                                                    <span ";
+
+                                                $query_last_week = mysqli_query($conn,"SELECT 1 FROM week w join week_historic h on h.week_id = w.id where w.id = (select max(id) from week) and recipe_id = '$row2[0]'");
+
+                                                if (mysqli_num_rows($query_last_week)!=0){
+                                                    echo "class=\"red\"";
+                                                };
+
+                                                echo ">$row2[1]</span><br>";
 
                                             }
                                             echo "</div>";
@@ -65,14 +70,14 @@
                     </div>
                     
                     
-                    <button>Valider la semaine</button>
+                    <button class="button is-link">Valider la semaine</button>
                     <span class="invisible red" id="missing_recipes">Pas assez de recettes sélectionnées</span>
                 </form>
-        
+                <br><br><br>
             </div>
 
             <div id="view_past_weeks">
-                <h2>Menus des semaines passées</h2>
+                <h2 class="title">Menus des semaines passées</h2>
                 <div>
                     <div id="table-week" class="table bold">
                         <div>Semaine</div>
@@ -80,7 +85,7 @@
                         <div>Supprimer</div>
                     </div>
                     <?php
-                        $query = mysqli_query($conn,'SELECT w.id, w.date FROM week w');
+                        $query = mysqli_query($conn,"SELECT w.id, w.date FROM week w order by w.date desc");
 
                         if (mysqli_num_rows($query)==0)
                         {
@@ -129,7 +134,7 @@
 
                                     echo "
                                         <div> 
-                                            <a href=\"delete_week.php?param=$row[0]\"><a href=\"delete_week.php?param=$row[0]\"><button type=\"button\">Supprimer</button></a> 
+                                            <a href=\"delete_week.php?param=$row[0]\"><a href=\"delete_week.php?param=$row[0]\"><button type=\"button\" class=\"button is-light is-small\" >Supprimer</button></a> 
                                         </div>
 
                                     </div>
@@ -142,8 +147,9 @@
                     </div>
             </div>
 
-                </main>
+        </main>
+
+        <!-- Footer partagé -->   
+        <?php include 'footer.php' ?>
         
-        <?php $conn->close(); ?>
-    </body>
-</html>
+        

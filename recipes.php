@@ -1,108 +1,107 @@
-<html>
-    <head>
-        <title>Générateur de repas</title>
-        <link rel="stylesheet" href="style.css">
-        <script type="text/javascript" src='script.js'> </script>
-        <?php include 'connect.php'?>
-    </head>
-    <body>
-        <!-- Menu -->   
-        <?php include 'header.php' ?> 
+        <!-- Header partagé -->   
+        <?php include 'header.php' ?>
 
         <!-- Recettes -->
         <main id="recipes">
             <div id="add_recipe">
-                <h2>Ajouter une nouvelle recette</h2>
+                <h2 class="title">Ajouter une nouvelle recette</h2>
                 <form action="add_recipe.php" method="POST">
-                    Nom de la recette: <input type="text" name="recipe_name"><br>
-                    Type de cuisine : 
-                    <select name="cuisine_name">
-                        <?php
-                        $query_cuisine_name = mysqli_query($conn,'SELECT id,cuisine_name FROM cuisine');
+                    Nom de la recette: <input type="text" class="input" name="recipe_name"><br>
+                    <br>Type de cuisine : <br>
+                    <div class="select">
+                        <select name="cuisine_name">
+                            <?php
+                            $query_cuisine_name = mysqli_query($conn,'SELECT id,cuisine_name FROM cuisine');
 
-                        if (mysqli_num_rows($query_cuisine_name)==0)
-                        {
-                            echo "<div class=\"table\">
-                                    No rows returned
-                                    </div>";
-                        }
-                        else
+                            if (mysqli_num_rows($query_cuisine_name)==0)
                             {
-                                while($row=mysqli_fetch_row($query_cuisine_name))
-                                {
-                                    echo "
-                                        <option value=\"$row[0]\">$row[1]</option>";
-                                }
+                                echo "<div class=\"table\">
+                                        No rows returned
+                                        </div>";
                             }
-                        ?>
-                    </select>
-                    <br>
-                    Saison : 
-                    <select name="season_id[]" multiple="multiple">
-                        <?php
-                        $query_season_name = mysqli_query($conn,'SELECT id,season_name FROM season');
-
-                        if (mysqli_num_rows($query_season_name)==0)
-                        {
-                            echo "<div class=\"table\">
-                                    No rows returned
-                                    </div>";
-                        }
-                        else
-                            {
-                                while($row=mysqli_fetch_row($query_season_name))
+                            else
                                 {
-                                    if ($row[1]=="all"){
-                                        $season = "Toutes saisons";
-                                    } else if (
-                                        $row[1]=="winter"){
-                                            $season = "Hiver";
-                                    } else if (
-                                        $row[1]=="spring"){
-                                            $season = "Printemps";
-                                    } else if (
-                                        $row[1]=="summer"){
-                                            $season = "Eté";
-                                    } else if (
-                                        $row[1]=="autumn"){
-                                            $season = "Automne";
-                                        }
+                                    while($row=mysqli_fetch_row($query_cuisine_name))
+                                    {
+                                        echo "
+                                            <option value=\"$row[0]\">$row[1]</option>";
+                                    }
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <br>
+                    <br>Saison : <br>
+                    <div class="select is-multiple">
+                        <select name="season_id[]" multiple="multiple">
+                            <?php
+                            $query_season_name = mysqli_query($conn,'SELECT id,season_name FROM season');
+
+                            if (mysqli_num_rows($query_season_name)==0)
+                            {
+                                echo "<div class=\"table\">
+                                        No rows returned
+                                        </div>";
+                            }
+                            else
+                                {
+                                    while($row=mysqli_fetch_row($query_season_name))
+                                    {
+                                        if ($row[1]=="all"){
+                                            $season = "Toutes saisons";
+                                        } else if (
+                                            $row[1]=="winter"){
+                                                $season = "Hiver";
+                                        } else if (
+                                            $row[1]=="spring"){
+                                                $season = "Printemps";
+                                        } else if (
+                                            $row[1]=="summer"){
+                                                $season = "Eté";
+                                        } else if (
+                                            $row[1]=="autumn"){
+                                                $season = "Automne";
+                                            }
+                                        
+                                        echo "<option value=\"$row[0]\">$season</option>";
                                     
-                                    echo "<option value=\"$row[0]\">$season</option>";
-                                
+                                    }
                                 }
-                            }
-                        ?>
-                    </select>
+                            ?>
+                        </select>
+                    </div>
                     <br>
-                    Type de cuisine : 
-                    <select name="attribute_id[]" multiple="multiple">
-                        <?php
-                        $query_attribute_name = mysqli_query($conn,'SELECT id,attribute_name FROM attribute');
+                    <br>Attributs : <br>
+                    <div class="select is-multiple">
+                        <select name="attribute_id[]" multiple="multiple">
+                            <?php
+                            $query_attribute_name = mysqli_query($conn,'SELECT id,attribute_name FROM attribute');
 
-                        if (mysqli_num_rows($query_attribute_name)==0)
-                        {
-                            echo "<div class=\"table\">
-                                    No rows returned
-                                    </div>";
-                        }
-                        else
+                            if (mysqli_num_rows($query_attribute_name)==0)
                             {
-                                while($row=mysqli_fetch_row($query_attribute_name))
-                                {
-                                    echo "
-                                        <option value=\"$row[0]\">$row[1]</option>";
-                                }
+                                echo "<div class=\"table\">
+                                        No rows returned
+                                        </div>";
                             }
-                        ?>
-                    </select>
-                    <br>
-                    <input type="submit">
+                            else
+                                {
+                                    while($row=mysqli_fetch_row($query_attribute_name))
+                                    {
+                                        echo "
+                                            <option value=\"$row[0]\">$row[1]</option>";
+                                    }
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <br><br>
+                    <input type="submit" value="Créer une nouvelle recette" class="button is-link">
                 </form>
+                <br><br>
             </div>
 
             <div id="view_recipes">
-                <h2>Recettes existantes</h2>
+                <h2 class="title">Recettes existantes</h2>
 
                 <div>
                     <div  id="table-recipe" class="table bold">
@@ -339,13 +338,13 @@
                                     echo "
                                             <div> 
                                                 <span id= \"visible_e_$rec_id\"> 
-                                                    <button type=\"button\" onclick=\"modify($rec_id)\">Modifier</button> 
+                                                    <a><button type=\"button\" onclick=\"modify($rec_id)\">Modifier</button></a>
                                                 </span>
                                                 <span class=\"invisible\"> 
                                                     <input type=\"number\" name=\"recipe_id\" value =\"$rec_id\">
                                                 </span>
                                                 <span class=\"invisible\" id= \"invisible_e_$rec_id\"> 
-                                                    <input type=\"submit\" value=\"Valider la modification\">
+                                                    <a><button type=\"submit\">Valider la modification</button></a>
                                                 </span>
                                             </div>
                     
@@ -362,6 +361,6 @@
             </div>
         </main>
         
-        <?php $conn->close(); ?>
-    </body>
-</html>
+
+        <!-- Footer partagé -->   
+        <?php include 'footer.php' ?>

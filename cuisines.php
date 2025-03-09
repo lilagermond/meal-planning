@@ -1,26 +1,19 @@
-<html>
-    <head>
-        <title>Générateur de repas</title>
-        <link rel="stylesheet" href="style.css">
-        <script type="text/javascript" src='script.js'> </script>
-        <?php include 'connect.php'?>
-    </head>
-    <body>
-        <!-- Menu -->   
+        <!-- Header partagé -->   
         <?php include 'header.php' ?> 
 
         <!-- Type de cuisine -->
         <main id="cuisine_type">
             <div id="add_cuisine">
-                <h2>Ajouter un nouveau type de cuisine</h2>
+                <h2 class="title">Ajouter un nouveau type de cuisine</h2>
                 <form method="POST" action="add_cuisine.php">
-                    Type de cuisine : <input type="text" name="cuisine_name"><br>
-                    <input type="submit">
+                    Type de cuisine : <input type="text" class="input" name="cuisine_name"><br><br>
+                    <input type="submit" value="Créer un type de cuisine" class="button is-link">
                 </form>
+                <br><br>
             </div>
 
             <div id="view_cuisine">
-                <h2>Types de cuisine existants</h2>
+                <h2 class="title">Types de cuisine existants</h2>
 
                 <div>
                     <div id="table-cuisine" class="table bold">
@@ -55,13 +48,13 @@
                                         </div>
                                         <div> 
                                             <span id= \"visible_b_$row[0]\"> 
-                                                <button type=\"button\" onclick=\"modify($row[0])\">Modifier</button> 
+                                                <a><button type=\"button\" onclick=\"modify($row[0])\">Modifier</button></a> 
                                             </span>
                                             <span class=\"invisible\"> 
                                                 <input type=\"number\" name=\"cuisine_id\" value =\"$row[0]\">
                                             </span>
-                                            <span class=\"invisible\" id= \"invisible_b_$row[0]\"> 
-                                                <input type=\"submit\" value=\"Valider la modification\">
+                                            <span class=\"invisible\" id=\"invisible_b_$row[0]\"> 
+                                                <a><button type=\"submit\">Valider la modification</button></a>
                                             </span>
                                         </div>
                     
@@ -79,8 +72,6 @@
 
         </main>
 
-    
-        
-        <?php $conn->close(); ?>
-    </body>
-</html>
+
+        <!-- Footer partagé -->   
+        <?php include 'footer.php' ?>
