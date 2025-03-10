@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="style.css">
         <script type="text/javascript" src='script.js'> </script>
         <?php include 'connect.php'?>
+        <?php include 'functions.php'?>
     </head>
     <body>
         <header class="bold">

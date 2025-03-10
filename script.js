@@ -1,4 +1,4 @@
-function modify(id) {
+function modify_table_row(id) {
     
     document.getElementById("invisible_a_" + id).style.display = 'block';
     document.getElementById("visible_a_" + id).style.display = 'none';

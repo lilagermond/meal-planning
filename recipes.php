@@ -8,95 +8,21 @@
             <div id="add_recipe">
                 <h2 class="title">Ajouter une nouvelle recette</h2>
                 <form action="add_recipe.php" method="POST">
-                    Nom de la recette: <input type="text" class="input" name="recipe_name"><br>
+                    Nom de la recette: 
+                        <input type="text" class="input" name="recipe_name"><br>
                     <br>Type de cuisine : <br>
                     <div class="select">
-                        <select name="cuisine_name">
-                            <?php
-                            $query_cuisine_name = mysqli_query($conn,'SELECT id,cuisine_name FROM cuisine');
-
-                            if (mysqli_num_rows($query_cuisine_name)==0)
-                            {
-                                echo "<div class=\"table\">
-                                        No rows returned
-                                        </div>";
-                            }
-                            else
-                                {
-                                    while($row=mysqli_fetch_row($query_cuisine_name))
-                                    {
-                                        if ($row[0] != 1){
-                                            echo "
-                                                <option value=\"$row[0]\">$row[1]</option>";
-                                        }
-                                    }
-                                }
-                            ?>
-                        </select>
+                        <?php get_select("cuisine_name",false,"create",0); ?>
                     </div>
                     <br>
                     <br>Saison : <br>
                     <div class="select is-multiple">
-                        <select name="season_id[]" multiple="multiple">
-                            <?php
-                            $query_season_name = mysqli_query($conn,'SELECT id,season_name FROM season');
-
-                            if (mysqli_num_rows($query_season_name)==0)
-                            {
-                                echo "<div class=\"table\">
-                                        No rows returned
-                                        </div>";
-                            }
-                            else
-                                {
-                                    while($row=mysqli_fetch_row($query_season_name))
-                                    {
-                                        if ($row[1]=="all"){
-                                            $season = "Toutes saisons";
-                                        } else if (
-                                            $row[1]=="winter"){
-                                                $season = "Hiver";
-                                        } else if (
-                                            $row[1]=="spring"){
-                                                $season = "Printemps";
-                                        } else if (
-                                            $row[1]=="summer"){
-                                                $season = "Eté";
-                                        } else if (
-                                            $row[1]=="autumn"){
-                                                $season = "Automne";
-                                            }
-                                        
-                                        echo "<option value=\"$row[0]\">$season</option>";
-                                    
-                                    }
-                                }
-                            ?>
-                        </select>
+                        <?php get_select("season_id[]",true,"create",0); ?>
                     </div>
                     <br>
                     <br>Attributs : <br>
                     <div class="select is-multiple">
-                        <select name="attribute_id[]" multiple="multiple">
-                            <?php
-                            $query_attribute_name = mysqli_query($conn,'SELECT id,attribute_name FROM attribute');
-
-                            if (mysqli_num_rows($query_attribute_name)==0)
-                            {
-                                echo "<div class=\"table\">
-                                        No rows returned
-                                        </div>";
-                            }
-                            else
-                                {
-                                    while($row=mysqli_fetch_row($query_attribute_name))
-                                    {
-                                        echo "
-                                            <option value=\"$row[0]\">$row[1]</option>";
-                                    }
-                                }
-                            ?>
-                        </select>
+                        <?php get_select("attribute_id[]",true,"create",0); ?>
                     </div>
                     <br><br>
                     <input type="submit" value="Créer une nouvelle recette" class="button is-link">
@@ -133,7 +59,7 @@
                                 {
                                     $rec_id = $row[0];
 
-                                    // Création des lignes
+                                    // Création des entrées du tableau
                                     echo "
                                         <form method=\"POST\" action=\"modify_recipe.php\">
 
@@ -161,131 +87,47 @@
                                                         echo "Non définie";
                                                     };
 
+                                    echo "      </span>
+                                                <span class=\"invisible\" id= \"invisible_b_$rec_id\">  ";
+
+                                                    get_select("cuisine_name",false,"modify","$rec_id");
 
                                     echo "
                                                 </span>
-                                                <span class=\"invisible\" id= \"invisible_b_$rec_id\"> 
-                                                    <select name=\"cuisine_name\">";
-                                                        
-                                                        $query_cuisine_name = mysqli_query($conn,'SELECT id,cuisine_name FROM cuisine');
-
-                                                        if (mysqli_num_rows($query_cuisine_name)==0)
-                                                        {
-                                                            echo "Aucun type disponible";
-                                                        }
-                                                        else
-                                                            {
-                                                                    
-                                                                while($row2=mysqli_fetch_row($query_cuisine_name))
-                                                                {
-                                                                    if ($row2[0] != '1'){
-                                                                        $cui_id = $row2[0];
-                                                                    
-                                                                        echo "<option value=\"$row2[0]\" ";
-
-                                                                        $query_cuisine_type = mysqli_query($conn,"SELECT 1 FROM recipe WHERE id = $rec_id and cuisine_id = $cui_id");
-                                                                    
-                                                                        if (mysqli_num_rows($query_cuisine_type)!=0) {
-                                                                            echo "selected";
-                                                                        } 
-                                                                            
-                                                                            echo ">$row2[1]</option>";
-                                                                        }
-                                                                    }
-                                                            }                                                
-                                    echo "                
-                                                </select>
-                                            </span>
-                                        </div>";
+                                            </div>";
                                     
                                     // Impression des saisons + modification de saison invisible
                                     echo "
                                             <div>
                                                 <span id=\"visible_c_$rec_id\">";
 
-                                                    $linked_seasons = mysqli_query($conn,"SELECT s.season_name 
+                                                    $linked_seasons = mysqli_query($conn,"SELECT 
+                                                        CASE WHEN s.season_name = 'all' THEN 'Toutes saisons'
+                                                            WHEN s.season_name = 'winter' THEN 'Hiver'
+                                                            WHEN s.season_name = 'spring' THEN 'Printemps'
+                                                            WHEN s.season_name = 'summer' THEN 'Eté'
+                                                            WHEN s.season_name = 'autumn' THEN 'Automne' END as season
                                                     FROM season s
                                                     JOIN linked_season l on l.season_id = s.id 
-                                                    WHERE l.recipe_id = $rec_id
-                                                    ");
+                                                    WHERE l.recipe_id = $rec_id");
 
                                                     if (mysqli_num_rows($linked_seasons)==0){
                                                         echo "";
                                                     } else {
-
                                                         while($row3=mysqli_fetch_row($linked_seasons))
                                                         {
-                                                            if ($row3[0]=="all"){
-                                                                $season = "Toutes saisons";
-                                                            } else if (
-                                                                $row3[0]=="winter"){
-                                                                    $season = "Hiver";
-                                                            } else if (
-                                                                $row3[0]=="spring"){
-                                                                    $season = "Printemps";
-                                                            } else if (
-                                                                $row3[0]=="summer"){
-                                                                    $season = "Eté";
-                                                            } else if (
-                                                                $row3[0]=="autumn"){
-                                                                    $season = "Automne";
-                                                                }
-                                                            
-                                                            echo $season.'<br>'; 
+                                                            echo $row3[0].'<br>'; 
                                                         }
-                                                    }
+                                                    };
 
                                                     
                                         echo "
                                                 </span>
-                                                <span class=\"invisible\" id= \"invisible_c_$rec_id\"> 
-                                                    <select name=\"season_id[]\" multiple=\"multiple\">";
-                                        
-                                                        $query_season_name = mysqli_query($conn,'SELECT id,season_name FROM season');
+                                                <span class=\"invisible\" id= \"invisible_c_$rec_id\"> ";
 
-                                                        if (mysqli_num_rows($query_season_name)==0)
-                                                        {
-                                                            echo "<div class=\"table\">
-                                                                    No rows returned
-                                                                    </div>";
-                                                        }
-                                                        else
-                                                            {
-                                                                while($row4=mysqli_fetch_row($query_season_name))
-                                                                {
-                                                                    $sea_id = $row4[0];
-                                                                    
-                                                                    if ($row4[1]=="all"){
-                                                                        $season = "Toutes saisons";
-                                                                    } else if (
-                                                                        $row4[1]=="winter"){
-                                                                            $season = "Hiver";
-                                                                    } else if (
-                                                                        $row4[1]=="spring"){
-                                                                            $season = "Printemps";
-                                                                    } else if (
-                                                                        $row4[1]=="summer"){
-                                                                            $season = "Eté";
-                                                                    } else if (
-                                                                        $row4[1]=="autumn"){
-                                                                            $season = "Automne";
-                                                                        }
-                                                                    
-                                                                    echo "<option value=\"$row4[0]\" ";
-                                                                    
-                                                                    $query_season_checked = mysqli_query($conn,"SELECT 1 FROM linked_season WHERE recipe_id = $rec_id and season_id = $sea_id");
-                                                                    
-                                                                    if (mysqli_num_rows($query_season_checked)!=0) {
-                                                                            echo "selected";
-                                                                    }
-                                                                
-                                                                    echo ">$season</option>";
-                                                                
-                                                                }
-                                                            }
-                                                    
+                                                    get_select("season_id[]",true,"modify",$rec_id);
+                                                        
                                     echo "                
-                                                    </select>
                                                 </span>
                                             </div>";
                                     
@@ -311,42 +153,17 @@
 
                                     echo "
                                                 </span>
-                                                <span class=\"invisible\" id= \"invisible_d_$rec_id\"> 
-                                                    <select name=\"attribute_id[]\" multiple=\"multiple\">";
-
-                                                    $query_attribute_name = mysqli_query($conn,'SELECT id,attribute_name FROM attribute');
-
-                                                    if (mysqli_num_rows($query_attribute_name)==0)
-                                                    {
-                                                        echo "Aucun attribut";
-                                                    }
-                                                    else
-                                                        {
-                                                            while($row6=mysqli_fetch_row($query_attribute_name))
-                                                            {
-                                                                $attr_id = $row6[0];
-
-                                                                echo "<option value=\"$row6[0]\" ";
-                                                                
-                                                                    $query_attribute_checked = mysqli_query($conn,"SELECT 1 FROM linked_attribute WHERE recipe_id = $rec_id and attribute_id = $attr_id");
-                                                                    
-                                                                    if (mysqli_num_rows($query_attribute_checked)!=0) {
-                                                                        echo "selected";
-                                                                    } 
-                                                            
-                                                                echo ">$row6[1]</option>";
-                                                            }
-                                                        }
-                                                    
-                                        echo "                
-                                                    </select>
+                                                <span class=\"invisible\" id= \"invisible_d_$rec_id\"> ";
+                                                
+                                                    get_select("attribute_id[]",true,"modify",$rec_id);
+                                    echo "
                                                 </span>
                                             </div>";
 
                                     echo "
                                             <div> 
                                                 <span id= \"visible_e_$rec_id\"> 
-                                                    <a><button type=\"button\" onclick=\"modify($rec_id)\">Modifier</button></a>
+                                                    <a><button type=\"button\" onclick=\"modify_table_row($rec_id)\">Modifier</button></a>
                                                 </span>
                                                 <span class=\"invisible\"> 
                                                     <input type=\"number\" name=\"recipe_id\" value =\"$rec_id\">

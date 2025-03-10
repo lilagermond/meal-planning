@@ -48,7 +48,7 @@
                                         </div>
                                         <div> 
                                             <span id= \"visible_b_$row[0]\"> 
-                                                <a><button type=\"button\" onclick=\"modify($row[0])\">Modifier</button></a> 
+                                                <a><button type=\"button\" onclick=\"modify_table_row($row[0])\">Modifier</button></a> 
                                             </span>
                                             <span class=\"invisible\"> 
                                                 <input type=\"number\" name=\"cuisine_id\" value =\"$row[0]\">

@@ -61,7 +61,7 @@
 
                                         <div> 
                                             <span id= \"visible_c_$row[0]\"> 
-                                                <a><button type=\"button\" onclick=\"modify($row[0])\">Modifier</button></a> 
+                                                <a><button type=\"button\" onclick=\"modify_table_row($row[0])\">Modifier</button></a> 
                                             </span>
                                             <span class=\"invisible\"> 
                                                 <input type=\"number\" name=\"attribute_id\" value =\"$row[0]\">
