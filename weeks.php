@@ -25,23 +25,21 @@
                         }
                         else
                             {
-                                // On récupère sur la première ligne tous les types de recette
                                 while($row=mysqli_fetch_row($query_cuisine))
                                 {
-                                    echo "<div>";
-                                        echo "<div class=\"cell-head\"> $row[1] </div>";
-                                    
                                     $cuisine_id = $row[0];
                                     $query_recipes = mysqli_query($conn,"SELECT r.id, r.recipe_name FROM recipe r where r.cuisine_id = '$cuisine_id'");
 
                                     if (mysqli_num_rows($query_recipes)==0)
                                     {
-                                        echo "<div class=\"cell-body\">
-                                                Pas de recettes
-                                                </div>";
+                                        continue;
                                     }
                                     else
                                         {
+                                        // On récupère sur la première ligne tous les types de recette
+                                        echo "<div>";
+                                            echo "<div class=\"cell-head\"> $row[1] </div>";
+                                    
                                             // On récupère sur les lignes suivantes toutes les recettes qui correspondent à ce type de cuisine
                                             echo "<div class=\"cell-body\">";
                                             $query_last_week = mysqli_query($conn,"SELECT recipe_id FROM week w join week_historic h on h.week_id = w.id where w.id = (select max(id) from week)");

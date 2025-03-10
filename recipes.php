@@ -3,6 +3,8 @@
 
         <!-- Recettes -->
         <main id="recipes">
+
+        <!-- Formulaire d'ajout d'une nouvelle recette -->
             <div id="add_recipe">
                 <h2 class="title">Ajouter une nouvelle recette</h2>
                 <form action="add_recipe.php" method="POST">
@@ -23,8 +25,10 @@
                                 {
                                     while($row=mysqli_fetch_row($query_cuisine_name))
                                     {
-                                        echo "
-                                            <option value=\"$row[0]\">$row[1]</option>";
+                                        if ($row[0] != 1){
+                                            echo "
+                                                <option value=\"$row[0]\">$row[1]</option>";
+                                        }
                                     }
                                 }
                             ?>
@@ -100,6 +104,7 @@
                 <br><br>
             </div>
 
+            <!-- Montrer la liste des recettes existantes pour pouvoir les consulter et les modifier -->
             <div id="view_recipes">
                 <h2 class="title">Recettes existantes</h2>
 
@@ -170,20 +175,23 @@
                                                         }
                                                         else
                                                             {
+                                                                    
                                                                 while($row2=mysqli_fetch_row($query_cuisine_name))
                                                                 {
-                                                                    $cui_id = $row2[0];
+                                                                    if ($row2[0] != '1'){
+                                                                        $cui_id = $row2[0];
                                                                     
-                                                                    echo "<option value=\"$row2[0]\" ";
+                                                                        echo "<option value=\"$row2[0]\" ";
 
-                                                                    $query_cuisine_type = mysqli_query($conn,"SELECT 1 FROM recipe WHERE id = $rec_id and cuisine_id = $cui_id");
-                                                                
-                                                                if (mysqli_num_rows($query_cuisine_type)!=0) {
-                                                                    echo "selected";
-                                                                } 
+                                                                        $query_cuisine_type = mysqli_query($conn,"SELECT 1 FROM recipe WHERE id = $rec_id and cuisine_id = $cui_id");
                                                                     
-                                                                    echo ">$row2[1]</option>";
-                                                                }
+                                                                        if (mysqli_num_rows($query_cuisine_type)!=0) {
+                                                                            echo "selected";
+                                                                        } 
+                                                                            
+                                                                            echo ">$row2[1]</option>";
+                                                                        }
+                                                                    }
                                                             }                                                
                                     echo "                
                                                 </select>
