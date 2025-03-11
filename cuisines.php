@@ -59,7 +59,7 @@
                                         </div>
                     
                                         <div> 
-                                            <a href=\"delete_cuisine.php?param=$row[0]\"><button type=\"button\">Supprimer</button></a> 
+                                            <a href=\"delete_row.php?id=$row[0]&table=cuisine\"><button type=\"button\">Supprimer</button></a> 
                                         </div>
                                     </div>
                                     </form> ";
