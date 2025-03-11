@@ -72,7 +72,7 @@
                                         </div>
                     
                                         <div> 
-                                            <a href=\"delete_attribute.php?param=$row[0]\"><button type=\"button\">Supprimer</button></a> 
+                                            <a href=\"delete_row.php?id=$row[0]&table=attribute\"><button type=\"button\">Supprimer</button></a> 
                                         </div>
 
                                     </div>

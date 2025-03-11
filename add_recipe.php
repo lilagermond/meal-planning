@@ -23,7 +23,7 @@
 
     if(!empty($_POST['attribute_id'])) {
         foreach ($_POST['attribute_id'] as $attribute_id) {
-            echo $attribute_id . '  ' . $last_id . '<br>';
+            echo "Attribut à crééer : ".$attribute_id . 'Créer sur le recipe_id :   ' . $last_id . '<br>';
 
             $sql2 = "INSERT INTO linked_attribute (recipe_id, attribute_id)
             VALUES ('$last_id','$attribute_id')";
@@ -36,30 +36,30 @@
         }
     }
 
-    if(empty($_POST['season_id'])) {
-        $sql3 = "INSERT INTO linked_season (recipe_id, season_id)
-            VALUES ('$last_id','1')";
+    if(!empty($_POST['season_id'])) {
+        foreach ($_POST['season_id'] as $season_id) {
+
+            $sql3 = "INSERT INTO linked_season (recipe_id, season_id)
+            VALUES ('$last_id','$season_id')";
 
             if ($conn->query($sql3) === TRUE) {
                     echo "New season created successfully";
                 } else {
                 echo "Error: " . $sql3 . "<br>" . $conn->error;
             };
+        }
     } else {
-        foreach ($_POST['season_id'] as $season_id) {
-
-            $sql4 = "INSERT INTO linked_season (recipe_id, season_id)
-            VALUES ('$last_id','$season_id')";
+        $sql4 = "INSERT INTO linked_season (recipe_id, season_id)
+            VALUES ('$last_id','1')";
 
             if ($conn->query($sql4) === TRUE) {
                     echo "New season created successfully";
                 } else {
                 echo "Error: " . $sql4 . "<br>" . $conn->error;
             };
-        }
     }
     
     $conn->close();
 
-    header('Location: recipes.php');
+   //header('Location: recipes.php');
     ?> 

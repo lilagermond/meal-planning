@@ -28,7 +28,7 @@
                                 while($row=mysqli_fetch_row($query_cuisine))
                                 {
                                     $cuisine_id = $row[0];
-                                    $query_recipes = mysqli_query($conn,"SELECT r.id, r.recipe_name FROM recipe r where r.cuisine_id = '$cuisine_id'");
+                                    $query_recipes = mysqli_query($conn,"SELECT r.id, r.recipe_name FROM recipe r where r.cuisine_id = '$cuisine_id' and active = 1");
 
                                     if (mysqli_num_rows($query_recipes)==0)
                                     {
@@ -42,8 +42,7 @@
                                     
                                             // On récupère sur les lignes suivantes toutes les recettes qui correspondent à ce type de cuisine
                                             echo "<div class=\"cell-body\">";
-                                            $query_last_week = mysqli_query($conn,"SELECT recipe_id FROM week w join week_historic h on h.week_id = w.id where w.id = (select max(id) from week)");
-
+                                           
                                             while($row2=mysqli_fetch_row($query_recipes))
                                             {
                                                 $query_last_week = mysqli_query($conn,"SELECT 1 FROM week w join week_historic h on h.week_id = w.id where w.id = (select max(id) from week) and recipe_id = '$row2[0]'");
@@ -140,7 +139,7 @@
 
                                     echo "
                                         <div> 
-                                            <a href=\"delete_week.php?param=$row[0]\"><a href=\"delete_week.php?param=$row[0]\"><button type=\"button\" class=\"button is-light is-small\" >Supprimer</button></a> 
+                                            <a href=\"delete_row.php?id=$row[0]&table=week\"><button type=\"button\">Supprimer</button></a> 
                                         </div>
 
                                     </div>
