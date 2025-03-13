@@ -11,11 +11,12 @@ Back-end : PHP, SQL Database
 
 ## Already functional
 
-Front-end : HTML, CSS, Javascript <br>
-Back-end : PHP, SQL Database
+* Create, modify and delete recipes
+* Create, modify and delete cuisine type and attributes that can be linked to the recipes
+* Create a new meal planning week with recipes, possibly by using auto-completion
+* Users can see when a recipe has been used on a previous week. Recipes used in the previous week are excluded from the auto-completion
 
 ## Coming later
 
-* Visual cue about the recipes that have been made the prior week
-* Possibility to auto-complete meal selection for the week 
-* Use past week, seasons and attributes to impact the auto-complete meal selection 
+* Refactoring of the code to make it clearer
+* Use seasons and attributes to impact the auto-complete meal selection 

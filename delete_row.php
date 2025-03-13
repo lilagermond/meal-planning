@@ -49,7 +49,7 @@
 
     $conn->close();
 
-    /*if ($table == "attribute"){
+    if ($table == "attribute"){
         header('Location: attributes.php');
     } else if ($table == "cuisine"){
         header('Location: cuisines.php');
@@ -57,7 +57,7 @@
         header('Location: recipes.php');
     } else if ($table == "week"){
         header('Location: weeks.php');
-    }*/
+    }
 
 ?> 
 
