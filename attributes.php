@@ -5,7 +5,7 @@
         <main id="attributes">
             <div id="add_attribute">
                 <h2 class="title">Ajouter un nouvel attribut</h2>
-                <form action="add_attribute.php" method="POST">
+                <form action="create_modify_row.php?action=create&table=attribute" method="POST">
                     Nom de l'attribut : <br>
                     <input type="text" class="input" name="attribute_name"><br><br>
                     Nombre max par semaine : <br>
@@ -39,7 +39,7 @@
                                 while($row=mysqli_fetch_row($query))
                                 {
                                     echo "
-                                    <form method=\"POST\" action=\"modify_attribute.php\">    
+                                    <form method=\"POST\" action=\"create_modify_row.php?action=modify&table=attribute\">    
                                     <div id=\"table-attribute\" class=\"table\">
                                         <div>
                                             <span id= \"visible_a_$row[0]\">

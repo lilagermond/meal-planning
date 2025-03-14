@@ -5,7 +5,7 @@
         <main id="cuisine_type">
             <div id="add_cuisine">
                 <h2 class="title">Ajouter un nouveau type de cuisine</h2>
-                <form method="POST" action="add_cuisine.php">
+                <form method="POST" action="create_modify_row.php?action=create&table=cuisine">
                     Type de cuisine : <input type="text" class="input" name="cuisine_name"><br><br>
                     <input type="submit" value="Créer un type de cuisine" class="button is-link">
                 </form>
@@ -35,7 +35,7 @@
                             while($row=mysqli_fetch_row($query_get_cuisine))
                                 {
                                     echo "
-                                    <form method=\"POST\" action=\"modify_cuisine.php\">
+                                    <form method=\"POST\" action=\"create_modify_row.php?action=modify&table=cuisine\">
                                         
                                     <div id=\"table-cuisine\" class=\"table\">
                                         <div>

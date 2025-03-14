@@ -6,7 +6,7 @@
         <main id="weeks">
             <div id="create_week">
                 <h2 class="title">Créer une nouvelle semaine</h2>
-                <form action="add_week.php" onsubmit="return validate_week_form()">
+                <form method="POST" action="create_modify_row.php?action=create&table=week" onsubmit="return validate_week_form()">
                     Nombre de jours : <input type="number" class="input" id="meal_number" name="meal_number"><br><br>
                     Date: <input type="date" class="input" name="date"><br>
                     <br><br>
@@ -20,11 +20,10 @@
                         if (mysqli_num_rows($query_cuisine)==0)
                         {
                             echo "<div>
-                            No rows returned
-                            </div>";
+                                    No rows returned
+                                  </div>";
                         }
-                        else
-                            {
+                        else {
                                 while($row=mysqli_fetch_row($query_cuisine))
                                 {
                                     $cuisine_id = $row[0];
@@ -67,16 +66,17 @@
                                         }
                                         echo "</div>";
                                     }
-                                echo "</div>";
                             }
                         ?>
+                    
                     </div>
                     
+                    <br><br>
                     <a class="button is-link" onclick="choose_recipe()">Choisir automatiquement les recettes</a>  
-                    <button class="button is-link">Valider la semaine</button>
+                    <input type="submit" value="Valider la semaine" class="button is-link">
                     <span class="invisible red" id="missing_recipes">Pas assez de recettes sélectionnées</span>
                 </form>
-
+                </div>
                 <br><br><br>
             </div>
             

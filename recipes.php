@@ -7,7 +7,7 @@
         <!-- Formulaire d'ajout d'une nouvelle recette -->
             <div id="add_recipe">
                 <h2 class="title">Ajouter une nouvelle recette</h2>
-                <form action="add_recipe.php" method="POST">
+                <form action="create_modify_row.php?action=create&table=recipe" method="POST">
                     Nom de la recette: 
                         <input type="text" class="input" name="recipe_name"><br>
                     <br>Type de cuisine : <br>
@@ -61,7 +61,7 @@
 
                                     // Création des entrées du tableau
                                     echo "
-                                        <form method=\"POST\" action=\"modify_recipe.php\">
+                                        <form method=\"POST\" action=\"create_modify_row.php?action=modify&table=recipe\">
 
                                         <div id=\"table-recipe\" class=\"table\">";
 
