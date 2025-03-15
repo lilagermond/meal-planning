@@ -8,7 +8,7 @@
                 <h2 class="title">Créer une nouvelle semaine</h2>
                 <form method="POST" action="create_modify_row.php?action=create&table=week" onsubmit="return validate_week_form()">
                     Nombre de jours : <input type="number" class="input" id="meal_number" name="meal_number"><br><br>
-                    Date: <input type="date" class="input" name="date"><br>
+                    Date: <input type="date" class="input" id="meal_date" name="date"><br>
                     <br><br>
 
                     Choisir les recettes <span class="red">(en rouge les recettes utilisées sur la semaine précédente)</span> : <br><br>
@@ -27,7 +27,10 @@
                                 while($row=mysqli_fetch_row($query_cuisine))
                                 {
                                     $cuisine_id = $row[0];
-                                    $query_recipes = mysqli_query($conn,"SELECT r.id, r.recipe_name FROM recipe r where r.cuisine_id = '$cuisine_id' and active = 1");
+                                    $query_recipes = mysqli_query($conn,
+                                                    "SELECT r.id, r.recipe_name 
+                                                     FROM recipe r 
+                                                     WHERE r.cuisine_id = '$cuisine_id' and active = 1");
 
                                     if (mysqli_num_rows($query_recipes)==0)
                                     {
@@ -59,7 +62,32 @@
                                                     echo "class=\"red\"";
                                                 };
 
-                                                echo ">$row2[1]</span><br>";
+                                                echo ">$row2[1]</span>";
+
+                                                // Information about the seasons
+                                                $linked_seasons = mysqli_query($conn,"SELECT s.id
+                                                    FROM season s
+                                                    JOIN linked_season l on l.season_id = s.id 
+                                                    WHERE l.recipe_id = $row2[0]");
+
+                                                    if (mysqli_num_rows($linked_seasons)!=0){
+
+                                                        echo "<select class=\"invisible\">";
+
+                                                            while($row3=mysqli_fetch_row($linked_seasons))
+                                                            {
+                                                                echo "<option name=\"season_$row2[0]\" value=\"$row3[0]\"></option>";
+                                                            }
+
+                                                        echo "</select>";
+
+                                                    };
+                                                
+                                                // Information about the attributes
+                                                $query_attribute = mysqli_query($conn,"SELECT s.id from season s where recipe_id = '$row2[0]'");
+
+                                                
+                                                echo "<br>";
 
                                             }
                                             echo "</div>";
