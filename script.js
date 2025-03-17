@@ -48,20 +48,12 @@ function validate_week_form()
      }
 
 function choose_recipe(){
+
         countCheckbox = 0;
-
         numberMeal = document.getElementById('meal_number').value;
-    
-        // Count the checkboxes that are already checked
-        inputElems = document.getElementsByTagName("input");
-
-        for (var i=0; i<inputElems.length; i++) {       
-           if (inputElems[i].type == "checkbox" && inputElems[i].checked == true){
-                countCheckbox++;
-           }
-        }
 
         // Determine the current season
+        numberMeal = document.getElementById('meal_number').value;
         mealDate = new Date(document.getElementById('meal_date').value);
 
         if (mealDate.getMonth() == 11 || mealDate.getMonth() == 0 || mealDate.getMonth() == 1) {
@@ -74,46 +66,113 @@ function choose_recipe(){
             currentSeason = 5;
         }
 
+    
+        // Count the checkboxes that are already checked and attributes already used
+        inputElems = document.getElementsByTagName("input");
 
+        for (var j=0; j<inputElems.length; j++) {       
+           if (inputElems[j].type == "checkbox" && inputElems[j].checked == true){
+                countCheckbox++;
+
+                //console.log("Recette " + inputElems[j].value);
+
+                // Initialize the attributes' counts
+                attributeValueInit = "attribute_" + inputElems[j].value;
+                getAttributeInit = document.getElementsByName(attributeValueInit);
+
+                for (var i = 0; i < getAttributeInit.length; i++) {
+
+                    for (var k = 0; k < getAllAttributes.length; k++) {
+
+                        if (getAttributeInit[i].value == getAllAttributes[k][0]){
+                            getAllAttributes[k][2] = getAllAttributes[k][2] + 1;
+                        }
+
+                    }
+                }
+
+           }
+        }
 
         rows = document.getElementsByName("choosen_recipe[]");
 
         while (countCheckbox<numberMeal) {
             random = Math.floor(Math.random() * (rows.length));
-            // console.log(rows[random].value);
+            //console.log("The selected recipe is " + rows[random].value);
 
             // If the checkbox is already selected, we don't use it
             if (rows[random].checked == true || rows[random].className == "red"){
                 console.log("Already checked");
                 continue;
             } else {
-                
+                //console.log("The recipe is not already checked");
+
                 seasonValue = "season_" + rows[random].value;
                 getSeason = document.getElementsByName(seasonValue);
 
-                isSeasonAppropriate = 0;
+                isSeasonAppropriate = false;
 
-                // If the season is not appropriate, we don't use it
                 var getSeason = document.getElementsByName(seasonValue);
-                    for (var i = 0; i < getSeason.length; i++) {
 
-                        if (getSeason[i].value == currentSeason || getSeason[i].value == 1){
-                            isSeasonAppropriate++;
-                        }
+                for (var i = 0; i < getSeason.length; i++) {
 
+                    if (getSeason[i].value == currentSeason || getSeason[i].value == 1){
+                        isSeasonAppropriate = true;
                     }
 
-                    if (isSeasonAppropriate == 0){
-                        //console.log("Not the right season");
-                        continue;   
-                    } 
+                }
+
+                // If the season is not appropriate, we don't use it
+                if (isSeasonAppropriate == false){
+                    //console.log("Not the right season");
+                    continue;   
+                } else {
+
+                    //console.log("The season is appropriate");
+
+                    attributeValue = "attribute_" + rows[random].value;
+                    getAttribute = document.getElementsByName(attributeValue);
+
+                    isAttributeOk = true; 
+
+                    for (var i = 0; i < getAttribute.length; i++) {
+
+                        for (var k = 0; k < getAllAttributes.length; k++) {
+
+                            if (getAttribute[i].value == getAllAttributes[k][0] && getAllAttributes[k][1] <= getAllAttributes[k][2]){
+                                isAttributeOk = false;
+
+                            }
+                        }
+                    }
+
+                    if (isAttributeOk == false){
+                        //console.log("The attribute is already full");
+                    } else {
+
+                        //console.log("The attributes are not overused");
+                        
+                        for (var i = 0; i < getAttribute.length; i++) {
+
+                            for (var k = 0; k < getAllAttributes.length; k++) {
+    
+                                if (getAttribute[i].value == getAllAttributes[k][0]){
+                                    getAllAttributes[k][2] = getAllAttributes[k][2] + 1;
+                                }
+    
+                            }
+                        }
+
+                        //console.log("OK, selected");
+                        rows[random].checked = true;
+
+                        countCheckbox++;
+                    }
+
+                }
 
             }
 
-            //console.log("OK, selected");
-            rows[random].checked = true;
-
-            countCheckbox++;
         }
 
 }

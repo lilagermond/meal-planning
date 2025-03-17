@@ -1,6 +1,24 @@
         <!-- Header partagé -->   
         <?php include 'header.php' ?>
 
+        <?php 
+            // Get the list of attributes     
+            $query_all_attributes = mysqli_query($conn,'SELECT id,max_number FROM attribute');
+            
+            if (mysqli_num_rows($query_all_attributes)!=0){
+
+                $attributes_to_use =  array();
+
+                while($row5=mysqli_fetch_row($query_all_attributes))
+                    {
+                        $attributes_to_use[] = [$row5[0],$row5[1],0];
+                    }
+
+            };
+        ?>
+        <script type="text/javascript">
+            var getAllAttributes = <?php echo json_encode($attributes_to_use, JSON_NUMERIC_CHECK); ?>;
+        </script> 
 
         <!-- Semaines  -->
         <main id="weeks">
@@ -65,9 +83,8 @@
                                                 echo ">$row2[1]</span>";
 
                                                 // Information about the seasons
-                                                $linked_seasons = mysqli_query($conn,"SELECT s.id
-                                                    FROM season s
-                                                    JOIN linked_season l on l.season_id = s.id 
+                                                $linked_seasons = mysqli_query($conn,"SELECT l.season_id
+                                                    FROM linked_season l 
                                                     WHERE l.recipe_id = $row2[0]");
 
                                                     if (mysqli_num_rows($linked_seasons)!=0){
@@ -84,8 +101,22 @@
                                                     };
                                                 
                                                 // Information about the attributes
-                                                $query_attribute = mysqli_query($conn,"SELECT s.id from season s where recipe_id = '$row2[0]'");
+                                                $linked_attributes = mysqli_query($conn,"SELECT l.attribute_id
+                                                    FROM linked_attribute l
+                                                    WHERE l.recipe_id = $row2[0]");
 
+                                                if (mysqli_num_rows($linked_attributes)!=0){
+
+                                                    echo "<select class=\"invisible\">";
+
+                                                        while($row4=mysqli_fetch_row($linked_attributes))
+                                                        {
+                                                            echo "<option name=\"attribute_$row2[0]\" value=\"$row4[0]\"></option>";
+                                                        }
+
+                                                    echo "</select>";
+
+                                                };
                                                 
                                                 echo "<br>";
 
@@ -103,6 +134,7 @@
                     <a class="button is-link" onclick="choose_recipe()">Choisir automatiquement les recettes</a>  
                     <input type="submit" value="Valider la semaine" class="button is-link">
                     <span class="invisible red" id="missing_recipes">Pas assez de recettes sélectionnées</span>
+
                 </form>
                 </div>
                 <br><br><br>
