@@ -72,6 +72,5 @@
 
         </main>
         
-        <?php $conn->close(); ?>
-    </body>
-</html>
+        <!-- Footer partagé -->   
+        <?php include 'footer.php' ?>
